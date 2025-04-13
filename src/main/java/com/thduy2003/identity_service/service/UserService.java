@@ -1,6 +1,5 @@
 package com.thduy2003.identity_service.service;
 
-import com.thduy2003.identity_service.dto.request.ApiResponse;
 import com.thduy2003.identity_service.dto.request.UserCreationRequest;
 import com.thduy2003.identity_service.dto.request.UserUpdateRequest;
 import com.thduy2003.identity_service.dto.response.UserResponse;
