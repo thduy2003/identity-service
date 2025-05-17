@@ -1,6 +1,6 @@
 package com.thduy2003.identity_service.controller;
 
-import com.thduy2003.identity_service.dto.request.ApiResponse;
+import com.thduy2003.identity_service.dto.response.ApiResponse;
 import com.thduy2003.identity_service.dto.request.UserCreationRequest;
 import com.thduy2003.identity_service.dto.request.UserUpdateRequest;
 import com.thduy2003.identity_service.dto.response.UserResponse;
@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @GetMapping("/myInfo")
-    ApiResponse<UserResponse> getMyInfo() {
+    ApiResponse<UserResponse> getMyInfo () {
         return ApiResponse.<UserResponse>builder()
                 .result(userService.getMyInfo())
                 .build();

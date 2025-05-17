@@ -1,5 +1,6 @@
 package com.thduy2003.identity_service.exception;
 
+
 public class AppException extends RuntimeException{
 
     public AppException(ErrorCode errorCode) {
