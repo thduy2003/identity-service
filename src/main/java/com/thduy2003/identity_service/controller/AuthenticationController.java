@@ -1,6 +1,7 @@
 package com.thduy2003.identity_service.controller;
 
 import com.nimbusds.jose.JOSEException;
+import com.thduy2003.identity_service.dto.request.LogoutRequest;
 import com.thduy2003.identity_service.dto.response.ApiResponse;
 import com.thduy2003.identity_service.dto.request.AuthenticationRequest;
 import com.thduy2003.identity_service.dto.request.IntrospectRequest;
@@ -36,6 +37,13 @@ public class AuthenticationController {
         IntrospectResponse result = authenticationService.introspect(request);
         return ApiResponse.<IntrospectResponse>builder()
                 .result(result)
+                .build();
+    }
+
+    @PostMapping("/logout")
+    ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws JOSEException, ParseException {
+        authenticationService.logout(request);
+        return ApiResponse.<Void>builder()
                 .build();
     }
 }
