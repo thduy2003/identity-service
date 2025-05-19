@@ -7,6 +7,7 @@ import com.thduy2003.identity_service.dto.response.UserResponse;
 import com.thduy2003.identity_service.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,11 +15,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
     private final UserService userService;
 
     @PostMapping
     ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request){
+        log.info("Controller: create user");
+
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
 
         apiResponse.setResult(userService.createUser(request));
