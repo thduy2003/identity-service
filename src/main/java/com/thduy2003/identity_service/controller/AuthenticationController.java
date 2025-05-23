@@ -23,27 +23,27 @@ import java.text.ParseException;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
-    AuthenticationService authenticationService;
+	AuthenticationService authenticationService;
 
-    @PostMapping("/log-in")
-    ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) throws JOSEException {
-        AuthenticationResponse result = authenticationService.authenticate(request);
-        return ApiResponse.<AuthenticationResponse>builder()
-                .result(result)
-                .build();
-    }
-    @PostMapping("/introspect")
-    ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest request) throws JOSEException, ParseException {
-        IntrospectResponse result = authenticationService.introspect(request);
-        return ApiResponse.<IntrospectResponse>builder()
-                .result(result)
-                .build();
-    }
+	@PostMapping("/log-in")
+	ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) throws JOSEException {
+		AuthenticationResponse result = authenticationService.authenticate(request);
+		return ApiResponse.<AuthenticationResponse>builder()
+				.result(result)
+				.build();
+	}
+	@PostMapping("/introspect")
+	ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest request) throws JOSEException, ParseException {
+		IntrospectResponse result = authenticationService.introspect(request);
+		return ApiResponse.<IntrospectResponse>builder()
+				.result(result)
+				.build();
+	}
 
-    @PostMapping("/logout")
-    ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws JOSEException, ParseException {
-        authenticationService.logout(request);
-        return ApiResponse.<Void>builder()
-                .build();
-    }
+	@PostMapping("/logout")
+	ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws JOSEException, ParseException {
+		authenticationService.logout(request);
+		return ApiResponse.<Void>builder()
+				.build();
+	}
 }

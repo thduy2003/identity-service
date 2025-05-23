@@ -17,55 +17,55 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
-    private final UserService userService;
+	private final UserService userService;
 
-    @PostMapping
-    ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request){
-        log.info("Controller: create user");
+	@PostMapping
+	ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request){
+		log.info("Controller: create user");
 
-        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
+		ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
 
-        apiResponse.setResult(userService.createUser(request));
+		apiResponse.setResult(userService.createUser(request));
 
-        return apiResponse;
-    }
-    @GetMapping
-    ApiResponse<List<UserResponse>> getUsers(){
-        ApiResponse<List<UserResponse>> apiResponse = new ApiResponse<>();
+		return apiResponse;
+	}
+	@GetMapping
+	ApiResponse<List<UserResponse>> getUsers(){
+		ApiResponse<List<UserResponse>> apiResponse = new ApiResponse<>();
 
-        apiResponse.setResult(userService.getUsers());
-        return apiResponse;
-    }
+		apiResponse.setResult(userService.getUsers());
+		return apiResponse;
+	}
 
-    @GetMapping("/{userId}")
-    ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId){
-        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
+	@GetMapping("/{userId}")
+	ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId){
+		ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
 
-        apiResponse.setResult(userService.getUser(userId));
-        return apiResponse;
-    }
+		apiResponse.setResult(userService.getUser(userId));
+		return apiResponse;
+	}
 
-    @GetMapping("/myInfo")
-    ApiResponse<UserResponse> getMyInfo () {
-        return ApiResponse.<UserResponse>builder()
-                .result(userService.getMyInfo())
-                .build();
-    }
+	@GetMapping("/myInfo")
+	ApiResponse<UserResponse> getMyInfo () {
+		return ApiResponse.<UserResponse>builder()
+				.result(userService.getMyInfo())
+				.build();
+	}
 
-    @PutMapping("/{userId}")
-    ApiResponse<UserResponse> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request){
-        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
+	@PutMapping("/{userId}")
+	ApiResponse<UserResponse> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request){
+		ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
 
-        apiResponse.setResult(userService.updateUser(userId, request));
-        return apiResponse;
-    }
+		apiResponse.setResult(userService.updateUser(userId, request));
+		return apiResponse;
+	}
 
-    @DeleteMapping("/{userId}")
-    ApiResponse<Object> deleteUser(@PathVariable String userId){
-        userService.deleteUser(userId);
-        ApiResponse<Object> apiResponse = new ApiResponse<>();
+	@DeleteMapping("/{userId}")
+	ApiResponse<Object> deleteUser(@PathVariable String userId){
+		userService.deleteUser(userId);
+		ApiResponse<Object> apiResponse = new ApiResponse<>();
 
-        apiResponse.setMessage("User has been deleted");
-        return apiResponse;
-    }
+		apiResponse.setMessage("User has been deleted");
+		return apiResponse;
+	}
 }

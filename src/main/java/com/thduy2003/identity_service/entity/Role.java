@@ -16,10 +16,10 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role {
-    @Id
-    String name;
-    String description;
+	@Id
+	String name;
+	String description;
 
-    @ManyToMany
-    Set<Permission> permissions;
+	@ManyToMany
+	Set<Permission> permissions;
 }

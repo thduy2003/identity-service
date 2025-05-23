@@ -26,79 +26,79 @@ import java.time.LocalDate;
 @AutoConfigureMockMvc
 @TestPropertySource("/test.properties")
 public class UserControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @MockitoBean
-    private UserService userService;
+	@MockitoBean
+	private UserService userService;
 
-    private UserCreationRequest request;
-    private UserResponse userResponse;
-    private LocalDate dob;
+	private UserCreationRequest request;
+	private UserResponse userResponse;
+	private LocalDate dob;
 
-    @BeforeEach
-    void initData() {
-        dob = LocalDate.of(1990, 1, 1);
+	@BeforeEach
+	void initData() {
+		dob = LocalDate.of(1990, 1, 1);
 
-        request = UserCreationRequest.builder()
-                .username("john")
-                .firstName("John")
-                .lastName("Doe")
-                .password("12345678")
-                .dob(dob)
-                .build();
+		request = UserCreationRequest.builder()
+				.username("john")
+				.firstName("John")
+				.lastName("Doe")
+				.password("12345678")
+				.dob(dob)
+				.build();
 
-        userResponse = UserResponse.builder()
-                .id("cf0600f538b3")
-                .username("john")
-                .firstName("John")
-                .lastName("Doe")
-                .dob(dob)
-                .build();
-    }
+		userResponse = UserResponse.builder()
+				.id("cf0600f538b3")
+				.username("john")
+				.firstName("John")
+				.lastName("Doe")
+				.dob(dob)
+				.build();
+	}
 
-    @Test
-    void createUser_validRequest_success() throws Exception {
-        //GIVEN
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        String content = objectMapper.writeValueAsString(request);
+	@Test
+	void createUser_validRequest_success() throws Exception {
+		//GIVEN
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+		String content = objectMapper.writeValueAsString(request);
 
-        Mockito.when(userService.createUser(ArgumentMatchers.any()))
-                .thenReturn(userResponse);
+		Mockito.when(userService.createUser(ArgumentMatchers.any()))
+				.thenReturn(userResponse);
 
-        //WHEN, THEN
-        mockMvc.perform(MockMvcRequestBuilders
-                .post("/users")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(content))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("code").value(1001))
-                .andExpect(MockMvcResultMatchers.jsonPath("result.id")
-                        .value("cf0600f538b3")
-        );
-    }
+		//WHEN, THEN
+		mockMvc.perform(MockMvcRequestBuilders
+				.post("/users")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(content))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.jsonPath("code").value(1001))
+				.andExpect(MockMvcResultMatchers.jsonPath("result.id")
+						.value("cf0600f538b3")
+		);
+	}
 
-    @Test
-    void createUser_usernameInvalid_fail() throws Exception {
-        //GIVEN
-        request.setUsername("jo");
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        String content = objectMapper.writeValueAsString(request);
+	@Test
+	void createUser_usernameInvalid_fail() throws Exception {
+		//GIVEN
+		request.setUsername("jo");
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+		String content = objectMapper.writeValueAsString(request);
 
-        Mockito.when(userService.createUser(ArgumentMatchers.any()))
-                .thenReturn(userResponse);
+		Mockito.when(userService.createUser(ArgumentMatchers.any()))
+				.thenReturn(userResponse);
 
-        //WHEN, THEN
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/users")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(content))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("code").value(1003))
-                .andExpect(MockMvcResultMatchers.jsonPath("message")
-                        .value("Username must be at least 3 characters")
-                );
-    }
+		//WHEN, THEN
+		mockMvc.perform(MockMvcRequestBuilders
+						.post("/users")
+						.contentType(MediaType.APPLICATION_JSON_VALUE)
+						.content(content))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest())
+				.andExpect(MockMvcResultMatchers.jsonPath("code").value(1003))
+				.andExpect(MockMvcResultMatchers.jsonPath("message")
+						.value("Username must be at least 3 characters")
+				);
+	}
 }

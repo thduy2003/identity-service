@@ -11,8 +11,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
-    @Builder.Default
-    int code = 1001;
-    String message;
-    T result;
+	@Builder.Default
+	int code = 1001;
+	String message;
+	T result;
 }

@@ -16,14 +16,14 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
-    String username;
-    String password;
-    String firstName;
-    String lastName;
-    LocalDate dob;
-    @ManyToMany
-    Set<Role> roles;
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	String id;
+	String username;
+	String password;
+	String firstName;
+	String lastName;
+	LocalDate dob;
+	@ManyToMany
+	Set<Role> roles;
 }

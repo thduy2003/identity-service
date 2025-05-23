@@ -16,71 +16,71 @@ import java.util.Objects;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    private static final String MIN_ATTRIBUTE = "min";
+	private static final String MIN_ATTRIBUTE = "min";
 
-    @ExceptionHandler(value = Exception.class)
-    ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception){
-        ApiResponse apiResponse = new ApiResponse();
+	@ExceptionHandler(value = Exception.class)
+	ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception){
+		ApiResponse apiResponse = new ApiResponse();
 
-        apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
-        apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
+		apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
+		apiResponse.setMessage(ErrorCode.UNCATEGORIZED_EXCEPTION.getMessage());
 
-        return ResponseEntity.badRequest().body(apiResponse);
-    }
+		return ResponseEntity.badRequest().body(apiResponse);
+	}
 
-    @ExceptionHandler(value = AppException.class)
-    ResponseEntity<ApiResponse> handlingAppException(AppException exception){
-        ErrorCode errorCode = exception.getErrorCode();
-        ApiResponse apiResponse = new ApiResponse();
+	@ExceptionHandler(value = AppException.class)
+	ResponseEntity<ApiResponse> handlingAppException(AppException exception){
+		ErrorCode errorCode = exception.getErrorCode();
+		ApiResponse apiResponse = new ApiResponse();
 
-        apiResponse.setCode(errorCode.getCode());
-        apiResponse.setMessage(errorCode.getMessage());
+		apiResponse.setCode(errorCode.getCode());
+		apiResponse.setMessage(errorCode.getMessage());
 
-        return ResponseEntity.status(errorCode.getStatusCode()).body(apiResponse);
-    }
+		return ResponseEntity.status(errorCode.getStatusCode()).body(apiResponse);
+	}
 
-    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    ResponseEntity<ApiResponse> handlingValidation(MethodArgumentNotValidException exception){
-        String enumKey = exception.getFieldError().getDefaultMessage();
+	@ExceptionHandler(value = MethodArgumentNotValidException.class)
+	ResponseEntity<ApiResponse> handlingValidation(MethodArgumentNotValidException exception){
+		String enumKey = exception.getFieldError().getDefaultMessage();
 
-        ErrorCode errorCode = ErrorCode.INVALID_KEY;
-        Map<String, Object> attributes = null;
-        try {
-            errorCode = ErrorCode.valueOf(enumKey);
+		ErrorCode errorCode = ErrorCode.INVALID_KEY;
+		Map<String, Object> attributes = null;
+		try {
+			errorCode = ErrorCode.valueOf(enumKey);
 
-            var constraintViolation = exception.getBindingResult()
-                    .getAllErrors().getFirst().unwrap(ConstraintViolation.class);
+			var constraintViolation = exception.getBindingResult()
+					.getAllErrors().getFirst().unwrap(ConstraintViolation.class);
 
-            attributes = constraintViolation.getConstraintDescriptor().getAttributes();
+			attributes = constraintViolation.getConstraintDescriptor().getAttributes();
 
-            log.info(attributes.toString());
-        } catch (IllegalArgumentException ignored){
+			log.info(attributes.toString());
+		} catch (IllegalArgumentException ignored){
 
-        }
+		}
 
-        ApiResponse apiResponse = new ApiResponse();
+		ApiResponse apiResponse = new ApiResponse();
 
-        apiResponse.setCode(errorCode.getCode());
-        apiResponse.setMessage(Objects.nonNull(attributes) ? mapAttribute(errorCode.getMessage(), attributes)
-                : errorCode.getMessage());
+		apiResponse.setCode(errorCode.getCode());
+		apiResponse.setMessage(Objects.nonNull(attributes) ? mapAttribute(errorCode.getMessage(), attributes)
+				: errorCode.getMessage());
 
-        return ResponseEntity.badRequest().body(apiResponse);
-    }
+		return ResponseEntity.badRequest().body(apiResponse);
+	}
 
-    @ExceptionHandler(value = AccessDeniedException.class)
-    ResponseEntity<ApiResponse> handlingAccessDeniedException(AccessDeniedException exception) {
-        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
-        return ResponseEntity.status(errorCode.getStatusCode()).body(
-                ApiResponse.builder()
-                        .code(errorCode.getCode())
-                        .message(errorCode.getMessage())
-                        .build()
-        );
-    }
+	@ExceptionHandler(value = AccessDeniedException.class)
+	ResponseEntity<ApiResponse> handlingAccessDeniedException(AccessDeniedException exception) {
+		ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+		return ResponseEntity.status(errorCode.getStatusCode()).body(
+				ApiResponse.builder()
+						.code(errorCode.getCode())
+						.message(errorCode.getMessage())
+						.build()
+		);
+	}
 
-    private String mapAttribute(String message, Map<String, Object> attributes) {
-        String minValue = String.valueOf(attributes.get(MIN_ATTRIBUTE));
+	private String mapAttribute(String message, Map<String, Object> attributes) {
+		String minValue = String.valueOf(attributes.get(MIN_ATTRIBUTE));
 
-        return message.replace("{" + MIN_ATTRIBUTE + "}", minValue);
-    }
+		return message.replace("{" + MIN_ATTRIBUTE + "}", minValue);
+	}
 }
