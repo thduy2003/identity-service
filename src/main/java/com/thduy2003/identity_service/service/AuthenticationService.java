@@ -47,6 +47,7 @@ public class AuthenticationService {
 	@Value("${jwt.signerKey}")
 	protected String SIGNER_KEY;
 	public AuthenticationResponse authenticate(AuthenticationRequest request) throws JOSEException {
+		log.info("SignerKey: {}", SIGNER_KEY);
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
 		var user = userRepository.findByUsername(request.getUsername())
